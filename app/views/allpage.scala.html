@@ -1,0 +1,7 @@
+@(list:List[Hobby])(implicit messages : Messages)
+
+@main("Hello"){
+@for(hobby<-list){
+    <input type="checkbox" value=@hobby.id>@hobby.hobbyText <br />
+    }
+}

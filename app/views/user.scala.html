@@ -1,0 +1,18 @@
+@(title : String, user:Customer, item : List[Item])
+
+@main(title){
+
+<h1>Welcome @user.name </h1>
+@if(!item.isEmpty){
+<h4>Your Items</h4>
+@for(items<- item){
+<ul>
+    <li><h5>@items.itemName @items.price</h5></li>
+</ul>
+}
+} else {
+<h3>
+    Sorry No items to display
+</h3>
+}
+}

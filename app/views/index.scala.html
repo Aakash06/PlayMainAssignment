@@ -1,0 +1,6 @@
+@()( implicit flash : Flash)
+
+@main("Aakash") {
+  <h1>@flash.get("Error")</h1>
+<h1>@flash.get("Success")</h1>
+}

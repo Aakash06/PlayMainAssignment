@@ -1,0 +1,19 @@
+@(userLogin:Form[LoginUser])( implicit messages : Messages)
+
+@if(userLogin.hasGlobalErrors) {
+<ul>
+    @for(error <- userLogin.globalErrors) {
+    <li>@Messages(error.messages, error.args)</li>
+    }
+</ul>
+}
+@import helper._
+
+@helper.form(action = routes.Authentication.loginCheck())   {
+@helper.inputText(userLogin("username"), '_label -> "user Name",'_showConstraints-> false)
+
+@helper.inputPassword(userLogin("password"), '_label -> "Password",'_showConstraints-> false)
+
+<button value="Submit">Submit</button>
+
+}

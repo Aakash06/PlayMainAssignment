@@ -1,0 +1,35 @@
+@(userForm:Form[User])( implicit messages : Messages, flash : Flash)
+
+@if(userForm.hasGlobalErrors) {
+<ul>
+    @for(error <- userForm.globalErrors) {
+    <li>@Messages(error.messages, error.args)</li>
+    }
+</ul>
+}
+@import helper._
+<div style="background-color:red;">@flash.get("Error")</div>
+@helper.form(action = routes.Authentication.createUser())   {
+@helper.inputText(userForm("firstName"), '_label -> "First Name",'_showConstraints-> false)
+
+@helper.inputText(userForm("middleName"), '_label -> "Middle Name",'_showConstraints-> false)
+
+@helper.inputText(userForm("lastName"), '_label -> "Last Name",'_showConstraints-> false)
+
+@helper.inputText(userForm("username"), '_label -> "user Name",'_showConstraints-> false)
+
+@helper.inputPassword(userForm("password"), '_label -> "Password",'_showConstraints-> false)
+
+@helper.inputPassword(userForm("confirmPassword"), '_label -> "Confirm Password",'_showConstraints-> false)
+
+@helper.inputText(userForm("phoneNumber"), '_label -> "Mobile number",'_showConstraints-> false)
+
+@helper.select(userForm("gender"),Seq("female"->"female","male"->"male"), '_label -> "Gender",'_showConstraints-> false)
+
+
+@helper.inputText(userForm("age"), '_label -> "Age",'_showConstraints-> false)
+
+
+<button value="Submit">Submit</button>
+
+}
