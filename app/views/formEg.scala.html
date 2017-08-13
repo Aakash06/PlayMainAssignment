@@ -1,4 +1,4 @@
-@(userForm:Form[User])( implicit messages : Messages, flash : Flash)
+@(userForm:Form[User] , hobbyList : List[Hobby])( implicit messages : Messages, flash : Flash)
 
 @if(userForm.hasGlobalErrors) {
 <ul>
@@ -26,9 +26,13 @@
 
 @helper.select(userForm("gender"),Seq("female"->"female","male"->"male"), '_label -> "Gender",'_showConstraints-> false)
 
-
 @helper.inputText(userForm("age"), '_label -> "Age",'_showConstraints-> false)
 
+@inputCheckboxGroup(
+userForm("hobbyID"),
+options = hobbyList.map(hobby => hobby.id.toString -> hobby.hobbyText.toString),
+'_label -> "Hobbies",
+'_error -> userForm("hobbyID").error.map(_.withMessage("select one or more hobbies")))
 
 <button value="Submit">Submit</button>
 

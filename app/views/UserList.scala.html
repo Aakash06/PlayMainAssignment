@@ -1,0 +1,19 @@
+@(userlist : List[UserData])( implicit messages : Messages)
+
+@main("mhmh"){
+
+<h1>Welcome </h1>
+
+@for(user<-userlist){
+<br /><br/>
+@user.username
+@if(user.isEnable){
+<button disabled> Enable</button>
+<button> Diable</button>
+}else {
+<button > Enable</button>
+<button disabled> Diable</button>
+}
+}
+}
+

@@ -1,4 +1,4 @@
-@(userLogin:Form[LoginUser])( implicit messages : Messages)
+@(userLogin:Form[LoginUser])(implicit messages: Messages, flash: Flash)
 
 @if(userLogin.hasGlobalErrors) {
 <ul>
@@ -7,13 +7,16 @@
     }
 </ul>
 }
+<div style="background-color:red;">@flash.get("Error")</div>
 @import helper._
 
 @helper.form(action = routes.Authentication.loginCheck())   {
-@helper.inputText(userLogin("username"), '_label -> "user Name",'_showConstraints-> false)
+@helper.inputText(userLogin("username"), '_label -> "userName",'_showConstraints-> false)
 
 @helper.inputPassword(userLogin("password"), '_label -> "Password",'_showConstraints-> false)
 
-<button value="Submit">Submit</button>
+<button value="user" name="login" >Login</button>
+<br />
+<a href="@routes.UserProfileController.updatePassword()">Forgot Password??</a>
 
 }
