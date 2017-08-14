@@ -68,7 +68,7 @@ class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, use
 
                       case true => Redirect(routes.UserProfileController.showProfile()).flashing("Success" -> "Thank You for registration as user").withSession("user"->userData.username)
 
-                      case false => Redirect(routes.Application.login()).flashing("Error"->"Unauthorised Your are disable")
+                      case false => Redirect(routes.Application.login()).flashing("Error"->"Your are disable")
                       }
 
                     }

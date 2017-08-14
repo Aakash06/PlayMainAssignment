@@ -15,6 +15,10 @@ GET     /dashboard                          controllers.UserProfileController.sh
 POST     /update                            controllers.UserProfileController.updateUserProfile
 GET      /forgotPassword                    controllers.UserProfileController.updatePassword
 GET      /userList                          controllers.AdminController.userEnableUpdate
+GET      /enable                            controllers.AdminController.disableUser(name:String)
+GET      /disable                           controllers.AdminController.enableUser(name:String)
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

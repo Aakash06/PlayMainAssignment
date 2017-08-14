@@ -24,6 +24,10 @@ libraryDependencies ++= Seq(
 
   "com.h2database" % "h2" % "1.4.188",
 
-  evolutions
+  specs2 % Test,
+
+  evolutions,
+
+  cache
 
 )

@@ -1,19 +1,45 @@
-@(userlist : List[UserData])( implicit messages : Messages)
+@(userlist : List[UserData])( implicit messages : Messages, flash : Flash)
 
-@main("mhmh"){
+@main("UserList"){
+    <center><H1>USER LIST</H1></center>
+    @if(userlist.isEmpty){
+        <h1>No users</h1>
+   } else {
+    <div style="background-color:red;">@flash.get("Error")</div>
 
-<h1>Welcome </h1>
+    <div style="background-color:green;">@flash.get("Success")</div>
 
-@for(user<-userlist){
-<br /><br/>
-@user.username
-@if(user.isEnable){
-<button disabled> Enable</button>
-<button> Diable</button>
-}else {
-<button > Enable</button>
-<button disabled> Diable</button>
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Enable</th>
+            <th>Disable</th>
+        </tr>
+        </thead>
+        <tbody>
+     @for(user<-userlist){
+     <tr>
+     <td>@user.id</td>
+       <td>@user.username</td>
+       @if(user.isEnable){
+       <td> <button class="btn btn-warning" disabled > Enable</button></td>
+
+        <td><button class="btn btn-success" onclick="location.href='@controllers.routes.AdminController.disableUser(user.username)';"> Disable</button></td>
+       }else {
+
+         <td><button class="btn btn-success" onclick="location.href='@controllers.routes.AdminController.enableUser(user.username)';" > Enable</button></td>
+
+         <td><button class="btn btn-warning" disabled> Disable</button></td>
+       }
+     </tr>
+     }
+        </tbody>
+    </table>
+</div>
+
+     }
+
 }
-}
-}
-

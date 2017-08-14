@@ -1,17 +1,20 @@
-< --- !UP>
+# --- !Ups
 
-CREATE TABLE userData (
-id   serial not null primary key,
-firstname varchar(50) not null,
-middlename varchar(50),
-lastname varchar(50) not null,
-username varchar(50) not null,
-password varchar(50) not null,
-mobilenumber int not null,
+CREATE TABLE if not exists userData (
+id      serial not null primary key,
+firstname varchar(500) not null,
+middlename varchar(500),
+lastname varchar(500) not null,
+username varchar(500) not null,
+password varchar(500) not null,
+mobilenumber bigint not null,
 gender varchar(8) not null,
-age int not null
+age int not null,
+isAdmin boolean not null,
+isEnable boolean not null
 );
 
-< --- !DOWN>
+# --- !Downs
 
 DROP TABLE userData;
+

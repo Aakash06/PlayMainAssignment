@@ -72,6 +72,13 @@ class UserDataServices @Inject()(protected val dbConfigProvider: DatabaseConfigP
       userProfileData.lastName,userProfileData.phoneNumber,userProfileData.age,userProfileData.gender)).map(_ > 0)
   }
 
+  def makeDisable(username:String): Future[Boolean] ={
+    db.run(userInfoQuery.filter(_.username=== username).map(_.isEnable).update(false)).map(_ > 0)
+  }
+
+  def makeEnable(username:String): Future[Boolean] ={
+    db.run(userInfoQuery.filter(_.username=== username).map(_.isEnable).update(true)).map(_ > 0)
+  }
 
 }
 

@@ -18,9 +18,9 @@ class UserProfileController @Inject()(val messagesApi: MessagesApi, formEg: Form
 
   def showProfile: Action[AnyContent] = Action.async{ implicit request: Request[AnyContent] =>
 
-    val email = request.session.get("user")
-    email match {
-      case Some(userEmail) => userDataServices.retrieve(userEmail).flatMap {
+    val user = request.session.get("user")
+    user match {
+      case Some(username) => userDataServices.retrieve(username).flatMap {
         case Nil =>
           Logger.info("No user by this UserName")
           Future.successful(Redirect(routes.Application.index()))
