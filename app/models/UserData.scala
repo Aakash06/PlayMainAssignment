@@ -80,6 +80,9 @@ class UserDataServices @Inject()(protected val dbConfigProvider: DatabaseConfigP
     db.run(userInfoQuery.filter(_.username=== username).map(_.isEnable).update(true)).map(_ > 0)
   }
 
+  def updateUserPassword(password: String, username: String): Future[Boolean] ={
+    db.run(userInfoQuery.filter(_.username===username).map(_.password).update(password)).map(_ > 0)
+  }
 }
 
 trait UserDataRepository extends HasDatabaseConfigProvider[JdbcProfile] {

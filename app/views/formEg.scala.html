@@ -7,6 +7,17 @@
     }
 </ul>
 }
+<div>
+    @header()
+</div>
+<div >
+    <center>
+        <table class="table table-bordered" style="width:450px; text-align: center;">
+           <tr style="background-color:#0000cc; color:white;">
+             <th style="text-align: center;">Sign Up</th>
+           </tr>
+            <tr>
+              <td>
 @import helper._
 <div style="background-color:red;">@flash.get("Error")</div>
 @helper.form(action = routes.Authentication.createUser())   {
@@ -34,6 +45,10 @@ options = hobbyList.map(hobby => hobby.id.toString -> hobby.hobbyText.toString),
 '_label -> "Hobbies",
 '_error -> userForm("hobbyID").error.map(_.withMessage("select one or more hobbies")))
 
-<button value="Submit">Submit</button>
-
+<button type="Submit" class="btn btn-primary">Submit</button>
 }
+              </td>
+            </tr>
+        </table>
+    </center>
+</div>

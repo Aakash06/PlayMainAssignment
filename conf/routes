@@ -17,7 +17,7 @@ GET      /forgotPassword                    controllers.UserProfileController.up
 GET      /userList                          controllers.AdminController.userEnableUpdate
 GET      /enable                            controllers.AdminController.disableUser(name:String)
 GET      /disable                           controllers.AdminController.enableUser(name:String)
-
+GET      /updatePassword                    controllers.Application.updatePass
 
 
 # Map static resources from the /public folder to the /assets URL path

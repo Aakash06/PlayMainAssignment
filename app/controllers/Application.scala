@@ -19,11 +19,17 @@ class Application @Inject()(implicit val messagesApi: MessagesApi, userDataServi
   }
   def signUp: Action[AnyContent] = Action.async { implicit request =>
     hobbyServices.returnAll().map { e =>
-      Ok(views.html.formEg(userForm.userConstraints,e))
+      Ok(views.html.formEg(userForm.userConstraints,e)).withNewSession
     }
   }
+
   def login: Action[AnyContent] = Action { implicit request =>
-    Ok(views.html.Login(userForm.loginConstraints))
+    Ok(views.html.Login(userForm.loginConstraints)).withNewSession
   }
+
+  def updatePass: Action[AnyContent] = Action { implicit request =>
+    Ok(views.html.passwordUpdate(userForm.updatePasswordConstraints)).withNewSession
+  }
+
 
 }

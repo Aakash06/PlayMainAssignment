@@ -8,13 +8,15 @@ import play.api.data.validation.{Constraint, Invalid, Valid, ValidationError}
 
 import scala.util.matching.Regex
 
-
 case class User(firstName: String, middleName: Option[String], lastName: String, username: String, password: String,
                 confirmPassword: String, phoneNumber: Long , gender: String, age: Int,hobbyID: List[Int])
 
 case class LoginUser(username: String, password: String)
 
 case class UserProfileData(firstName: String, middleName: Option[String], lastName: String, phoneNumber: Long , age: Int, gender: String,hobbies: List[Int])
+
+case class UpdatePassword(userName : String,password : String, confirmPassword : String)
+
 
 object UserProfileData{
   def apply(list: List[(String, Option[String], String, Long, Int , String,List[Int])]) = {
@@ -65,6 +67,13 @@ class FormEg {
   )(UserProfileData.apply)(UserProfileData.unapply))
 
 
+  val updatePasswordConstraints: Form[UpdatePassword] = Form(mapping(
+    "userName" -> nonEmptyText,
+    "password" -> nonEmptyText.verifying(validPassword),
+    "confirmPassword" -> nonEmptyText.verifying(validPassword)
+  )(UpdatePassword.apply)(UpdatePassword.unapply)
+    verifying("Failed form constraints!", field => field.password.equals(field.confirmPassword)))
+
   def validPassword: Constraint[String] = {
     Constraint(
       {
@@ -96,5 +105,4 @@ class FormEg {
 
   val allLetters: Regex = """[A-Za-z]*""".r
   val validPasswordRegex: Regex = """^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$""".r
-
 }

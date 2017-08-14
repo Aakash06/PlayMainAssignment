@@ -1,7 +1,9 @@
 package controllers
 
 import javax.inject._
+
 import models.{HobbyServices, UserData, UserDataServices, UsertoHobbyServices}
+import org.mindrot.jbcrypt.BCrypt
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Controller, Request}
@@ -79,8 +81,33 @@ class UserProfileController @Inject()(val messagesApi: MessagesApi, formEg: Form
     }
   }
 
-  def updatePassword()=Action{ implicit request =>
-    Redirect(routes.Application.index())
+  def updatePassword(): Action[AnyContent] =Action.async{ implicit request =>
+    formEg.updatePasswordConstraints.bindFromRequest.fold(
+      formWithErrors => {
+        Logger.error("Error while creating an account :" + formWithErrors)
+        Future.successful(Redirect(routes.Application.updatePass()).flashing("Error" -> "Fill Form Correctly"))
+      },
+      userUpdatePassword => {
+        userDataServices.findByUsername(userUpdatePassword.userName).flatMap {
+
+          case Some(userNameFromData) => Logger.info("Username is found" + userNameFromData)
+
+            val encryptPassword = BCrypt.hashpw(userUpdatePassword.password, BCrypt.gensalt)
+
+             userDataServices.updateUserPassword(encryptPassword,userUpdatePassword.userName).map{
+
+              case true => Logger.info("Password changed")
+                Redirect(routes.Application.login()).withNewSession
+
+              case false => Logger.error("Error while updating Password")
+                Redirect(routes.Application.updatePass()).flashing("Error"->"Try Again")
+            }
+          case None => Logger.info("No User by this username")
+            Future.successful(Redirect(routes.Application.updatePass()).flashing("Error" -> "No User by this username"))
+        }
+
+      })
+
   }
 
 }
