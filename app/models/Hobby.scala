@@ -9,7 +9,6 @@ import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
 case class Hobby(id: Int, hobbyText: String)
-
 class HobbyServices @Inject()(protected val dbConfigProvider: DatabaseConfigProvider,val messagesApi: MessagesApi)
   extends HobbyRepository {
 

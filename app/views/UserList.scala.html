@@ -1,5 +1,8 @@
 @(userlist : List[UserData])( implicit messages : Messages, flash : Flash)
 
+<div>
+    @headerLoginAdmin()
+</div>
 @main("UserList"){
     <center><H1>USER LIST</H1></center>
     @if(userlist.isEmpty){

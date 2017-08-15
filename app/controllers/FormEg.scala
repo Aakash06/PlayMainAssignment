@@ -1,6 +1,5 @@
 package controllers
 
-import play.api.Logger
 import play.api.data.Forms._
 import play.api.data._
 import play.api.data.validation.Constraints._
@@ -17,9 +16,10 @@ case class UserProfileData(firstName: String, middleName: Option[String], lastNa
 
 case class UpdatePassword(userName : String,password : String, confirmPassword : String)
 
+case class AssignmentForm(title: String,description:String)
 
 object UserProfileData{
-  def apply(list: List[(String, Option[String], String, Long, Int , String,List[Int])]) = {
+  def apply(list: List[(String, Option[String], String, Long, Int , String,List[Int])]): UserProfileData = {
     val firstName = list.head._1
     val middleName = list.head._2
     val lastName = list.head._3
@@ -73,6 +73,12 @@ class FormEg {
     "confirmPassword" -> nonEmptyText.verifying(validPassword)
   )(UpdatePassword.apply)(UpdatePassword.unapply)
     verifying("Failed form constraints!", field => field.password.equals(field.confirmPassword)))
+
+  val AssignmentConstraints: Form[AssignmentForm] = Form(mapping(
+    "title" -> nonEmptyText,
+    "description" -> nonEmptyText
+  )(AssignmentForm.apply)(AssignmentForm.unapply))
+
 
   def validPassword: Constraint[String] = {
     Constraint(

@@ -1,7 +1,15 @@
-@(userForm: Form[UserProfileData], hobbiesList: List[Hobby])(implicit messages: Messages, flash: Flash)
+@(userForm: Form[UserProfileData], hobbiesList: List[Hobby],isAdmin:Boolean)(implicit messages: Messages, flash: Flash)
 
 @import helper._
-
+@if(isAdmin){
+<div>
+    @headerLoginAdmin()
+</div>
+}else{
+<div>
+ @headerLogin()
+</div>
+}
 @main("Play"){
     <h1>Profile</h1>
     <h4>@flash.get("success")</h4>

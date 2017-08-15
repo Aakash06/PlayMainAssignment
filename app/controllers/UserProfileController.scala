@@ -7,7 +7,6 @@ import org.mindrot.jbcrypt.BCrypt
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Controller, Request}
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -36,8 +35,12 @@ class UserProfileController @Inject()(val messagesApi: MessagesApi, formEg: Form
             case hobbies: List[Int] =>
               val userProfile = UserProfileData(user.firstname, user.middlename, user.lastname, user.mobilenumber,
                 user.age, user.gender, hobbies)
-              hobbyServices.returnAll().map{ hobby =>
-              Ok(views.html.updateForm(formEg.userProfileDataForm.fill(userProfile),hobby))
+              hobbyServices.returnAll().flatMap{ hobby =>
+              userDataServices.checkAdmin(username).map{
+                case true =>Ok(views.html.updateForm(formEg.userProfileDataForm.fill(userProfile),hobby,true))
+                case false =>Ok(views.html.updateForm(formEg.userProfileDataForm.fill(userProfile),hobby,false))
+              }
+
               }
           }
       }
@@ -56,9 +59,13 @@ class UserProfileController @Inject()(val messagesApi: MessagesApi, formEg: Form
         formEg.userProfileDataForm.bindFromRequest.fold(
           formWithErrors => {
             Logger.info("dvdvd" + formWithErrors)
-            hobbyServices.returnAll().map(
-              hobbies =>  BadRequest(views.html.updateForm(formWithErrors, hobbies)))
-
+            hobbyServices.returnAll().flatMap {
+              hobbies =>
+                userDataServices.checkAdmin(user).map {
+                  case true => BadRequest(views.html.updateForm(formWithErrors, hobbies, true))
+                  case false => BadRequest(views.html.updateForm(formWithErrors, hobbies, false))
+                }
+            }
           },
           userProfile => {
             Logger.info("Updating Your Data")

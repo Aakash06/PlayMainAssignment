@@ -47,7 +47,7 @@ class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, use
 
   }
 
-  def loginCheck = Action.async { implicit request =>
+  def loginCheck: Action[AnyContent] = Action.async { implicit request =>
     formEg.loginConstraints.bindFromRequest.fold(
         formWithErrors => {
           Logger.error("Error while login : " + formWithErrors)
@@ -57,6 +57,7 @@ class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, use
           userDataServices.findByUsername(userData.username).flatMap{
 
             case Some(usernamee)=>
+              Logger.info("Checking In Database For login" + usernamee)
 
               userDataServices.checkloginValue(userData.username,userData.password).flatMap
                  {
@@ -66,7 +67,7 @@ class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, use
 
                      case false=> userDataServices.checkEnable(userData.username).map{
 
-                      case true => Redirect(routes.UserProfileController.showProfile()).flashing("Success" -> "Thank You for registration as user").withSession("user"->userData.username)
+                      case true => Redirect(routes.Application.loginUser()).flashing("Success" -> "Thank You for registration as user").withSession("user"->userData.username)
 
                       case false => Redirect(routes.Application.login()).flashing("Error"->"Your are disable")
                       }
