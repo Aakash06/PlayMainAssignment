@@ -1,12 +1,5 @@
 @(userForm:Form[User] , hobbyList : List[Hobby])( implicit messages : Messages, flash : Flash)
 
-@if(userForm.hasGlobalErrors) {
-<ul>
-    @for(error <- userForm.globalErrors) {
-    <li>@Messages(error.messages, error.args)</li>
-    }
-</ul>
-}
 <div>
     @header()
 </div>
@@ -18,8 +11,7 @@
            </tr>
             <tr>
               <td>
-@import helper._
-<div style="background-color:red;">@flash.get("Error")</div>
+@import helper._<div style="background-color:red;">@flash.get("Error")</div>
 @helper.form(action = routes.Authentication.createUser())   {
 @helper.inputText(userForm("firstName"), '_label -> "First Name",'_showConstraints-> false)
 

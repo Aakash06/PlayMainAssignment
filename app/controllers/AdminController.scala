@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import models.{HobbyServices, UserData, UserDataServices, UsertoHobbyServices}
+import models.{UserData, UserDataServices}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, Controller}
@@ -11,8 +11,7 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class AdminController @Inject()(val messagesApi: MessagesApi, formEg: FormEg, userDataServices: UserDataServices,
-  usertoHobbyServices : UsertoHobbyServices,hobbyServices: HobbyServices)
+class AdminController @Inject()(val messagesApi: MessagesApi, userDataServices: UserDataServices)
   extends Controller with I18nSupport {
 
   implicit val messages: MessagesApi = messagesApi
@@ -25,6 +24,7 @@ class AdminController @Inject()(val messagesApi: MessagesApi, formEg: FormEg, us
           case true => userDataServices.retrieveAll().map {
             userlist =>
               val onlyUsers: List[UserData] = userlist.filter(!_.isAdmin)
+              Logger.info("vjjvvjhv")
               Ok(views.html.UserList(onlyUsers))
           }
           case false =>   Future.successful(Redirect(routes.Application.login()).flashing("Error"->"No Session").withNewSession)
@@ -71,4 +71,4 @@ class AdminController @Inject()(val messagesApi: MessagesApi, formEg: FormEg, us
     }
 
   }
-  }
+}

@@ -20,6 +20,7 @@ class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, use
       formWithErrors => {
         Logger.error("Error while creating an account :" + formWithErrors)
         Future.successful(Redirect(routes.Application.signUp()).flashing("Error" -> "Fill Form Correctly"))
+
       },
       userData => {
         userDataServices.findByUsername(userData.username).flatMap {
@@ -31,35 +32,35 @@ class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, use
             val encryptPassword = BCrypt.hashpw(userData.password, BCrypt.gensalt)
             userDataServices.store(UserData(0, userData.firstName, userData.middleName, userData.lastName,
               userData.username, encryptPassword, userData.phoneNumber, userData.gender, userData.age, false, true))
-              .flatMap {
-                case true =>
+              .flatMap { case true =>
+                  Logger.info("Finding UsernameID")
                   userDataServices.findByUsernameGetId(userData.username).flatMap {
                     case Some(id) => usertoHobbyServices.store(id, userData.hobbyID).map {
-                      case true => Redirect(routes.Application.index1())
+                      case true =>
+                        Logger.info("Redirecting to home page")
+                        Redirect(routes.Application.index1())
                         .flashing("Success" -> "Thank You for registration").withSession("user" -> userData.username)
-                      case false => Redirect(routes.Application.index1()).flashing("Error" -> "Error while linking hobbies")
+                      case false => Redirect(routes.Application.signUp()).flashing("Error" -> "Error while linking hobbies")
                     }
-                    case None => Future.successful(Redirect(routes.Application.index1()).flashing("Error" -> "Error while registration"))
+                    case None => Future.successful(Redirect(routes.Application.signUp()).flashing("Error" -> "Error while registration"))
                   }
-                case false => Future.successful(Redirect(routes.Application.index1()).flashing("Error" -> "Error while registration"))
+                case false => Future.successful(Redirect(routes.Application.signUp()).flashing("Error" -> "Error while registration"))
               }
         }
       })
-
   }
 
   def loginCheck: Action[AnyContent] = Action.async { implicit request =>
     formEg.loginConstraints.bindFromRequest.fold(
         formWithErrors => {
           Logger.error("Error while login : " + formWithErrors)
-          Future.successful(BadRequest(views.html.Login(formWithErrors)).flashing("Error"->"Fill Form Correctly"))
+          Future.successful(Redirect(routes.Application.login()).flashing("Error"->"Fill Form Correctly"))
         },
     userData => {
           userDataServices.findByUsername(userData.username).flatMap{
 
             case Some(usernamee)=>
               Logger.info("Checking In Database For login" + usernamee)
-
               userDataServices.checkloginValue(userData.username,userData.password).flatMap
                  {
                    case true=> userDataServices.checkAdmin(userData.username).flatMap{
@@ -83,5 +84,4 @@ class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, use
             }
         })
     }
-
 }

@@ -2,15 +2,18 @@ package controllers
 
 import com.google.inject.Inject
 import models.{HobbyServices, UserDataServices}
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Controller}
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 
-class Application @Inject()(implicit val messagesApi: MessagesApi,
-      hobbyServices: HobbyServices,formEg:FormEg,userDataServices:UserDataServices ) extends Controller with I18nSupport {
+class Application @Inject()(val messagesApi: MessagesApi,
+      hobbyServices: HobbyServices,formEg:FormEg,userDataServices:UserDataServices) extends Controller with I18nSupport {
 
+  implicit val messages: MessagesApi = messagesApi
 
   def index1: Action[AnyContent] = Action.async { implicit request =>
     val username = request.session.get("user")
@@ -58,8 +61,10 @@ class Application @Inject()(implicit val messagesApi: MessagesApi,
     val username = request.session.get("user")
     username match {
       case Some(user) =>
+        Logger.info("Get Session")
         userDataServices.checkAdmin(user).map {
-          case true => Ok(views.html.AddAssignment(formEg.AssignmentConstraints))
+          case true => Logger.info("Assignment Display")
+            Ok(views.html.AddAssignment(formEg.AssignmentConstraints))
           case false => Redirect(routes.Application.login()).withNewSession
         }
       case None => Future.successful(Redirect(routes.Application.login()).withNewSession)

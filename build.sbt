@@ -9,6 +9,8 @@ scalaVersion := "2.11.8"
 
 javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
+coverageExcludedPackages := "<empty>;Reverse.*;"
+
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play-slick" % "2.0.0",
 

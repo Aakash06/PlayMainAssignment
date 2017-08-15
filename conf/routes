@@ -18,7 +18,7 @@ GET      /userList                           controllers.AdminController.userEna
 GET      /enable                             controllers.AdminController.disableUser(name:String)
 GET      /disable                            controllers.AdminController.enableUser(name:String)
 GET      /updatePassword                     controllers.Application.updatePass
-POST      /addAssignment                      controllers.AssignmentController.addAssignment
+POST      /addAssignment                     controllers.AssignmentController.addAssignment
 GET      /viewAssignmentUser                 controllers.AssignmentController.viewAssignmentUser
 GET      /viewAssignmentAdmin                controllers.AssignmentController.viewAssignmentAdmin
 GET      /deleteAssignment                   controllers.AssignmentController.deleteAssignment(id:Int)
