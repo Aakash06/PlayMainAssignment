@@ -73,7 +73,7 @@ class UserProfileController @Inject()(val messagesApi: MessagesApi, formEg: Form
                 case Some(id)=> usertoHobbyServices.updateUserHobby(id,userProfile.hobbies).map{
                   case true => Logger.info("Updated hobbies")
                     Redirect(routes.UserProfileController.showProfile()).flashing("Success"->"Your Profile is updated")
-                  //case false=>Redirect(routes.UserProfileController.showProfile()).flashing("Error"->"Error while Updating your hobbies")
+                  case false=>Redirect(routes.UserProfileController.showProfile()).flashing("Error"->"Error while Updating your hobbies")
                 }
 
                 case None => Future.successful(Redirect(routes.Application.index()).withNewSession)

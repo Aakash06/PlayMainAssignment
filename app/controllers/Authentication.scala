@@ -1,8 +1,9 @@
 package controllers
 
 import javax.inject._
+
 import org.mindrot.jbcrypt.BCrypt
-import models.{UserData, UserDataServices, UsertoHobbyServices}
+import models.{HobbyServices, UserData, UserDataServices, UsertoHobbyServices}
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, Controller}
@@ -10,7 +11,8 @@ import play.api.mvc.{Action, AnyContent, Controller}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, userDataServices: UserDataServices,usertoHobbyServices : UsertoHobbyServices)
+class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, userDataServices: UserDataServices,
+      usertoHobbyServices : UsertoHobbyServices,hobbyServices: HobbyServices)
   extends Controller with I18nSupport {
 
   implicit val messages: MessagesApi = messagesApi
@@ -19,8 +21,9 @@ class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, use
     formEg.userConstraints.bindFromRequest.fold(
       formWithErrors => {
         Logger.error("Error while creating an account :" + formWithErrors)
-        Future.successful(Redirect(routes.Application.signUp()).flashing("Error" -> "Fill Form Correctly"))
-
+       Future.successful(Redirect(routes.Application.signUp()).flashing("Error" -> "Fill Form Correctly"))
+       /*hobbyServices.returnAll().map{ e =>
+        BadRequest(views.html.formEg(formWithErrors,e))}*/
       },
       userData => {
         userDataServices.findByUsername(userData.username).flatMap {

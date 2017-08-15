@@ -1,5 +1,5 @@
 @(assignmentForm:Form[AssignmentForm])( implicit messages : Messages, flash : Flash)
-
+@import helper._
 <div>
     @headerLoginAdmin()
 </div>
@@ -19,14 +19,14 @@
             </tr>
             <tr>
                 <td>
-                    @import helper._
+
                     <div style="background-color:red;">@flash.get("Error")</div>
                     <div style="background-color:green;">@flash.get("Success")</div>
                     @helper.form(action = routes.AssignmentController.addAssignment())   {
                     @helper.inputText(assignmentForm("title"), '_label -> "Title of Assignment",'_showConstraints-> false)
 
                     @textarea(field = assignmentForm("description"), args = 'rows -> 5, 'cols -> 50)
-                    <button type="Submit" class="btn btn-primary">Submit</button>
+                    <button type="Submit" class="btn btn-primary">Add</button>
                     }
                 </td>
             </tr>

@@ -2,7 +2,7 @@
 package controllers
 
 import akka.stream.Materializer
-import models.{UserData, UserDataServices, UsertoHobbyServices}
+import models.{UserData, UserDataServices}
 import org.scalatestplus.play.PlaySpec
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
 import play.api.i18n.MessagesApi

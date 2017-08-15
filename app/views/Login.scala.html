@@ -1,5 +1,5 @@
 @(userLogin:Form[LoginUser])(implicit messages: Messages, flash: Flash)
-
+@import helper._
 @if(userLogin.hasGlobalErrors) {
 <ul>
     @for(error <- userLogin.globalErrors) {
@@ -22,7 +22,7 @@
 <tr>
     <td>
 <div style="background-color:red;">@flash.get("Error")</div>
-@import helper._
+
 
 @helper.form(action = routes.Authentication.loginCheck())   {
 @helper.inputText(userLogin("username"), '_label -> "UserName",'_showConstraints-> false)

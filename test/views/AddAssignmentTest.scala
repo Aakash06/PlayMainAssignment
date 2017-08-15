@@ -10,16 +10,16 @@ import play.api.mvc.Flash
 import scala.concurrent.ExecutionContext.Implicits.global
 import scalaz.concurrent.Future
 
-class formEgTest extends PlaySpec with MockitoSugar {
+class AddAssignmentTest extends PlaySpec with MockitoSugar {
 
-  "signup should" should {
-    "render signup form " in {
+  "Add Assignment should" should {
+    "render Add Assignment form " in {
       val mockMessage = mock[Messages]
       val mockFlash = mock[Flash]
-      val signUpForm = new FormEg
+      val form = new FormEg
       when(mockFlash.get("error")) thenReturn None
-      val html = views.html.formEg.render(signUpForm.userConstraints,List(Hobby(1,"Playing")),mockMessage,mockFlash)
-      assert(html.toString.contains("Submit"))
+      val html = views.html.AddAssignment.render(form.AssignmentConstraints,mockMessage,mockFlash)
+      assert(html.toString.contains("Add"))
     }
   }
 
