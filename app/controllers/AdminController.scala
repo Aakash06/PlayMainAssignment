@@ -36,7 +36,7 @@ class AdminController @Inject()(val messagesApi: MessagesApi, formEg: FormEg, us
 
 
 
-  def disableUser(userName:String) = Action.async { implicit request=>
+  def disableUser(userName:String): Action[AnyContent] = Action.async { implicit request=>
     val adminName = request.session.get("user")
     adminName match {
       case Some(user)=>
@@ -54,7 +54,7 @@ class AdminController @Inject()(val messagesApi: MessagesApi, formEg: FormEg, us
 
   }
 
-  def enableUser(userName:String) = Action.async { implicit request=>
+  def enableUser(userName:String): Action[AnyContent] = Action.async { implicit request=>
     val adminName = request.session.get("user")
     adminName match {
       case Some(user)=>
@@ -69,7 +69,6 @@ class AdminController @Inject()(val messagesApi: MessagesApi, formEg: FormEg, us
 
       case None => Future.successful(Redirect(routes.Application.login()).flashing("Error"->"No Session").withNewSession)
     }
-
 
   }
   }

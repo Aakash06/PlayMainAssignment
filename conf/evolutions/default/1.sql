@@ -14,7 +14,26 @@ isAdmin boolean not null,
 isEnable boolean not null
 );
 
+CREATE table assignment(
+id serial not null primary key,
+title varchar(500),
+description varchar(100000)
+);
+
+CREATE TABLE hobby(
+id serial primary key,
+hobbyText varchar(400) not null
+);
+
+CREATE TABLE usertohobby(
+id serial not null primary key,
+userId  int REFERENCES userdata(id),
+hobbyid int REFERENCES hobby(id)
+);
+
 # --- !Downs
 
 DROP TABLE userData;
-
+DROP TABLE assignment;
+DROP TABLE hobby;
+DROP TABLE usertohobby;

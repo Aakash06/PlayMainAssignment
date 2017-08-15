@@ -35,7 +35,8 @@ class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, use
                 case true =>
                   userDataServices.findByUsernameGetId(userData.username).flatMap {
                     case Some(id) => usertoHobbyServices.store(id, userData.hobbyID).map {
-                      case true => Redirect(routes.Application.index1()).flashing("Success" -> "Thank You for registration").withSession("user" -> userData.username)
+                      case true => Redirect(routes.Application.index1())
+                        .flashing("Success" -> "Thank You for registration").withSession("user" -> userData.username)
                       case false => Redirect(routes.Application.index1()).flashing("Error" -> "Error while linking hobbies")
                     }
                     case None => Future.successful(Redirect(routes.Application.index1()).flashing("Error" -> "Error while registration"))
@@ -63,13 +64,16 @@ class Authentication @Inject()(val messagesApi: MessagesApi, formEg: FormEg, use
                  {
                    case true=> userDataServices.checkAdmin(userData.username).flatMap{
 
-                     case true =>Future.successful(Redirect(routes.Application.index1()).flashing("Success" -> "Thank You for registration As admin").withSession("user"->userData.username))
+                     case true =>Future.successful(Redirect(routes.Application.index1())
+                       .flashing("Success" -> "Thank You for registration As admin").withSession("user"->userData.username))
 
                      case false=> userDataServices.checkEnable(userData.username).map{
 
-                      case true => Redirect(routes.Application.loginUser()).flashing("Success" -> "Thank You for registration as user").withSession("user"->userData.username)
+                      case true => Redirect(routes.Application.loginUser())
+                        .flashing("Success" -> "Thank You for registration as user").withSession("user"->userData.username)
 
-                      case false => Redirect(routes.Application.login()).flashing("Error"->"Your are disable")
+                      case false => Redirect(routes.Application.login())
+                        .flashing("Error"->"Your are disable")
                       }
 
                     }

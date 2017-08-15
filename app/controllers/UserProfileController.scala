@@ -54,7 +54,6 @@ class UserProfileController @Inject()(val messagesApi: MessagesApi, formEg: Form
   def updateUserProfile(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     val username = request.session.get("user")
     username match {
-
       case Some(user) =>
         formEg.userProfileDataForm.bindFromRequest.fold(
           formWithErrors => {
@@ -74,7 +73,7 @@ class UserProfileController @Inject()(val messagesApi: MessagesApi, formEg: Form
                 case Some(id)=> usertoHobbyServices.updateUserHobby(id,userProfile.hobbies).map{
                   case true => Logger.info("Updated hobbies")
                     Redirect(routes.UserProfileController.showProfile()).flashing("Success"->"Your Profile is updated")
-                  case false=>Redirect(routes.UserProfileController.showProfile()).flashing("Error"->"Error while Updating your hobbies")
+                  //case false=>Redirect(routes.UserProfileController.showProfile()).flashing("Error"->"Error while Updating your hobbies")
                 }
 
                 case None => Future.successful(Redirect(routes.Application.index()).withNewSession)
@@ -82,7 +81,6 @@ class UserProfileController @Inject()(val messagesApi: MessagesApi, formEg: Form
               case false => Future.successful(Redirect(routes.Application.index()).withNewSession)
             }
           })
-
 
       case None => Future.successful(Redirect(routes.Application.index1()).flashing("unauthorised" -> "You need to log in first!").withNewSession)
     }
