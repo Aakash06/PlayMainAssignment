@@ -38,7 +38,7 @@ class AdminControllerTest extends PlaySpec with MockitoSugar with GuiceOneServer
      // redirectLocation(result) mustBe Some("/userList")
     }
 
-    "When user is not admin" in {
+    "When user is not admin-enableDisable" in {
 
       when(userDataServices.checkAdmin("Aakash06")).thenReturn(Future(false))
 
@@ -47,7 +47,7 @@ class AdminControllerTest extends PlaySpec with MockitoSugar with GuiceOneServer
       redirectLocation(result) mustBe Some("/login")
     }
 
-    "When there is No session" in {
+    "When there is No session-enableDisable" in {
 
       when(userDataServices.checkAdmin("Aakash06")).thenReturn(Future(false))
 
@@ -55,10 +55,6 @@ class AdminControllerTest extends PlaySpec with MockitoSugar with GuiceOneServer
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/login")
     }
-
-  }
-
-  "AdminController Testing - Disable User" should {
 
     "be disabled" in {
       when(userDataServices.checkAdmin("Aakash06")).thenReturn(Future(true))
@@ -76,24 +72,19 @@ class AdminControllerTest extends PlaySpec with MockitoSugar with GuiceOneServer
       status(result) mustBe 303
     }
 
-    "When there is No session" in {
+    "When there is No session-disable" in {
 
       val result = call(adminController.disableUser("Aakash06"), FakeRequest(GET, "/").withSession())
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/login")
     }
 
-    "not admin" in {
+    "not admin-disable" in {
       when(userDataServices.checkAdmin("Aakash06")).thenReturn(Future(false))
       val result = call(adminController.disableUser("Aakash06"), FakeRequest(GET, "/").withSession("user"->"Aakash06"))
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/login")
     }
-
-
-  }
-
-  "AdminController Testing - Enable User" should {
 
     "be enabled" in {
       when(userDataServices.checkAdmin("Aakash06")).thenReturn(Future(true))
@@ -104,28 +95,25 @@ class AdminControllerTest extends PlaySpec with MockitoSugar with GuiceOneServer
 
     }
 
-    "not able to disabled" in {
+    "not able to enabled" in {
       when(userDataServices.checkAdmin("Aakash06")).thenReturn(Future(true))
       when(userDataServices.makeEnable("Aakash06")).thenReturn(Future(false))
       val result = call(adminController.enableUser("Aakash06"), FakeRequest(GET, "/").withSession("user"->"Aakash06"))
       status(result) mustBe 303
     }
 
-    "When there is No session" in {
+    "When there is No session-enable" in {
 
       val result = call(adminController.enableUser("Aakash06"), FakeRequest(GET, "/").withSession())
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/login")
     }
 
-    "not admin" in {
+    "not admin-enable" in {
       when(userDataServices.checkAdmin("Aakash06")).thenReturn(Future(false))
       val result = call(adminController.enableUser("Aakash06"), FakeRequest(GET, "/").withSession("user"->"Aakash06"))
       status(result) mustBe 303
       redirectLocation(result) mustBe Some("/login")
     }
-
-
-  }
 
 }

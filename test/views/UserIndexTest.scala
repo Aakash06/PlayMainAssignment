@@ -8,13 +8,14 @@ import play.api.mvc.Flash
 import scala.concurrent.ExecutionContext.Implicits.global
 import scalaz.concurrent.Future
 
-class headerTest extends PlaySpec with MockitoSugar {
+class UserIndexTest extends PlaySpec with MockitoSugar {
 
-  "Header should" should {
+  "User Index should" should {
     "display" in {
-      val html = views.html.header.render()
-      assert(html.toString.contains("Login"))
+      val mockFlash = mock[Flash]
+      when(mockFlash.get("Error")).thenReturn(None)
+      val html = views.html.UserIndex.render(mockFlash)
+      assert(html.toString.contains("Welcome to Knoldus !"))
     }
   }
-
 }

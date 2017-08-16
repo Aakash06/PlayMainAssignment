@@ -29,7 +29,7 @@ class UsertoHobbyServices @Inject()(protected val dbConfigProvider: DatabaseConf
   }
 
   def getUserHobby(userid:Int): Future[List[Int]] = {
-    db.run(usertohobbyInfoQuery.filter(_.userid===userid).map(_.hobbyid).to[List].result)
+    db.run(usertohobbyInfoQuery.filter(_.userid===userid).map(_.hobbyid).to[List].sorted.result)
   }
 
   def updateUserHobby(userID:Int, hobbyID:List[Int]): Future[Boolean] ={

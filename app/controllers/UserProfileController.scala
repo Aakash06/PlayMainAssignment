@@ -10,7 +10,6 @@ import play.api.mvc.{Action, AnyContent, Controller, Request}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-
 class UserProfileController @Inject()(val messagesApi: MessagesApi, formEg: FormEg, userDataServices: UserDataServices,
        usertoHobbyServices : UsertoHobbyServices,hobbyServices: HobbyServices)
   extends Controller with I18nSupport {
